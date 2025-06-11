@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const Contact = () => {
+  const [mounted, setMounted] = useState(false);
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -13,6 +14,11 @@ const Contact = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  // Set mounted to true after the component mounts to ensure client-side only rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormState({
@@ -148,7 +154,7 @@ const Contact = () => {
             </div>
           </motion.div>
           
-          {/* Contact form */}
+          {/* Contact form - only render interactive elements when mounted */}
           <motion.div 
             className="lg:col-span-3 glass-effect rounded-2xl p-8"
             initial={{ opacity: 0, x: 50 }}
@@ -156,7 +162,12 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            {isSubmitted ? (
+            {!mounted ? (
+              // Simple placeholder during server rendering
+              <div className="min-h-[400px] flex items-center justify-center">
+                <p className="text-muted">Loading contact form...</p>
+              </div>
+            ) : isSubmitted ? (
               <motion.div 
                 className="h-full flex flex-col items-center justify-center text-center py-8"
                 initial={{ opacity: 0, scale: 0.9 }}
