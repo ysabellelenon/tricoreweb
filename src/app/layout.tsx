@@ -7,7 +7,10 @@ export const metadata = {
   title: "TriCore Information Technology Solutions",
   description: "Innovative IT solutions for the digital future",
   icons: {
-    icon: '/images/Tricore-Logo-Icon.png',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/images/Tricore-Logo-Icon.png', type: 'image/png' }
+    ]
   },
 };
 
