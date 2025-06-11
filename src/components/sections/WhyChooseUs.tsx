@@ -74,12 +74,24 @@ const WhyChooseUs = () => {
   const isInView = useInView(titleRef, { once: true, amount: 0.2 });
   
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-20 relative overflow-hidden" id="solutions">
       {/* Background elements */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary opacity-5 blur-3xl" />
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-secondary opacity-5 blur-3xl" />
+      <div className="absolute top-0 left-0 w-full h-full grid-pattern opacity-10 z-0" />
+      <div className="absolute top-40 right-40 w-80 h-80 rounded-full bg-primary opacity-5 blur-3xl" />
+      <div className="absolute bottom-40 left-40 w-80 h-80 rounded-full bg-secondary opacity-5 blur-3xl" />
       
       <div className="container mx-auto px-4 relative z-10">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Why <span className="gradient-text">Choose Us</span>
+          </h2>
+        </motion.div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side with image */}
           <div className="order-2 lg:order-1">
@@ -141,9 +153,6 @@ const WhyChooseUs = () => {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Why <span className="gradient-text">Choose Us</span>
-              </h2>
               <p className="text-muted mb-8">
                 At TriCore, we combine technical expertise with business acumen to deliver solutions that drive real results. Our client-focused approach ensures that we understand your unique challenges and opportunities.
               </p>

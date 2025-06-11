@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const Hero = () => {
   return (
-    <div className="relative h-screen w-full overflow-hidden flex items-center">
+    <section className="relative min-h-screen flex items-center overflow-hidden" id="hero">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background/90 to-background/80 z-0" />
       
@@ -80,7 +80,7 @@ const Hero = () => {
           </motion.div>
         </div>
       </motion.div>
-    </div>
+    </section>
   );
 };
 

@@ -6,11 +6,11 @@ import { motion } from 'framer-motion';
 import Logo from '@/components/ui/Logo';
 
 const navItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Services', href: '/services' },
-  { name: 'Solutions', href: '/solutions' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Home', href: '/#hero' },
+  { name: 'Services', href: '/#services' },
+  { name: 'About', href: '/#about' },
+  { name: 'Solutions', href: '/#solutions' },
+  { name: 'Contact', href: '/#contact' },
 ];
 
 export default function Navbar() {
@@ -28,6 +28,34 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled]);
+
+  // Handle smooth scrolling for anchor links
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Only prevent default for hash links
+    if (href.startsWith('/#')) {
+      e.preventDefault();
+      
+      // Extract the id from the href
+      const id = href.replace('/#', '');
+      const element = document.getElementById(id);
+      
+      if (element) {
+        // Scroll to the element
+        window.scrollTo({
+          top: element.offsetTop - 100, // Offset for the navbar
+          behavior: 'smooth'
+        });
+        
+        // Close mobile menu if open
+        if (mobileMenuOpen) {
+          setMobileMenuOpen(false);
+        }
+        
+        // Update URL without page reload
+        window.history.pushState(null, '', href);
+      }
+    }
+  };
 
   return (
     <motion.header
@@ -54,6 +82,7 @@ export default function Navbar() {
               <Link 
                 href={item.href}
                 className="text-foreground hover:text-accent transition-colors duration-300 font-medium relative group"
+                onClick={(e) => handleAnchorClick(e, item.href)}
               >
                 {item.name}
                 <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
@@ -95,7 +124,10 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 className="text-foreground hover:text-accent transition-colors duration-300 py-2 px-4 rounded-lg hover:bg-surface"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  handleAnchorClick(e, item.href);
+                  setMobileMenuOpen(false);
+                }}
               >
                 {item.name}
               </Link>
