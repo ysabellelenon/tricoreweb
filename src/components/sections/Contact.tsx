@@ -28,10 +28,11 @@ const Contact = () => {
   };
   
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    // We won't prevent default since we want the form to actually submit
     setIsSubmitting(true);
     
-    // Simulate form submission
+    // Show thank you message after submission
+    // We use setTimeout to ensure the form has time to submit before showing the message
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -46,7 +47,7 @@ const Contact = () => {
           message: ''
         });
       }, 5000);
-    }, 1500);
+    }, 1000);
   };
   
   return (
@@ -103,7 +104,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-muted mb-1">Phone</h4>
-                    <p className="text-foreground">+1 (555) 123-4567</p>
+                    <p className="text-foreground">+63 906 567 5195</p>
                   </div>
                 </div>
                 
@@ -115,20 +116,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-muted mb-1">Email</h4>
-                    <p className="text-foreground">info@tricore-tech.com</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-lg bg-surface flex items-center justify-center mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted mb-1">Address</h4>
-                    <p className="text-foreground">123 Tech Boulevard, Suite 456<br />San Francisco, CA 94107</p>
+                    <p className="text-foreground">solutionstricore@gmail.com</p>
                   </div>
                 </div>
               </div>
@@ -164,7 +152,18 @@ const Contact = () => {
                 <p className="text-muted max-w-md">Your message has been sent successfully. We'll get back to you as soon as possible.</p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form 
+                action="https://formsubmit.co/solutionstricore@gmail.com" 
+                method="POST" 
+                onSubmit={handleSubmit} 
+                className="space-y-6"
+              >
+                {/* FormSubmit Configuration */}
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value={typeof window !== 'undefined' ? window.location.href : ''} />
+                <input type="hidden" name="_subject" value="New contact form submission" />
+                <input type="text" name="_honey" style={{ display: 'none' }} />
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-muted mb-2">Name</label>
