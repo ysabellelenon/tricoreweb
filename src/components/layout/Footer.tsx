@@ -13,19 +13,6 @@ const Footer = () => {
             <p className="text-muted mb-4 max-w-sm">
               TriCore Information Technology Solutions provides cutting-edge technology services to help businesses transform and thrive in the digital era.
             </p>
-            <div className="flex space-x-4">
-              {['twitter', 'facebook', 'linkedin', 'github'].map((social) => (
-                <a 
-                  key={social}
-                  href={`https://${social}.com`} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full flex items-center justify-center border border-surface hover:border-accent transition-colors duration-300"
-                >
-                  <span className="text-muted hover:text-accent">{social[0].toUpperCase()}</span>
-                </a>
-              ))}
-            </div>
           </div>
           
           <div>

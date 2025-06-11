@@ -132,25 +132,6 @@ const Contact = () => {
                   </div>
                 </div>
               </div>
-              
-              <div className="mt-12">
-                <h4 className="text-sm font-medium text-muted mb-4">Connect with us</h4>
-                <div className="flex space-x-4">
-                  {['twitter', 'facebook', 'linkedin', 'github'].map((social) => (
-                    <motion.a 
-                      key={social}
-                      href={`https://${social}.com`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-lg flex items-center justify-center border border-surface hover:border-accent transition-colors duration-300"
-                      whileHover={{ y: -3, scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span className="text-muted hover:text-accent">{social[0].toUpperCase()}</span>
-                    </motion.a>
-                  ))}
-                </div>
-              </div>
             </div>
           </motion.div>
           
