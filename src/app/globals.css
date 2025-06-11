@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #0070f3;
+  --primary-dark: #0050b3;
+  --secondary: #6c2bd9;
+  --accent: #00c9ff;
+  --background: #000212;
+  --foreground: #ffffff;
+  --muted: #a0a0a0;
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-hover: rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-[#000212] text-white;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-glow {
+  text-shadow: 0 0 10px rgba(0, 201, 255, 0.5);
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-glow {
+  box-shadow: 0 0 15px rgba(0, 201, 255, 0.5);
+}
+
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
