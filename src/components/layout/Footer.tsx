@@ -18,7 +18,7 @@ const Footer = () => {
           <div>
             <h3 className="text-sm font-bold uppercase text-muted tracking-wider mb-4">Services</h3>
             <ul className="space-y-2">
-              {['Cloud Solutions', 'Cybersecurity', 'IT Consulting', 'Software Development', 'Data Analytics'].map((item) => (
+              {['Software Development', 'Website Development', 'Application Development', 'Cybersecurity', 'IT Consulting', 'Managed IT Services'].map((item) => (
                 <li key={item}>
                   <Link href="/services" className="text-foreground hover:text-accent transition-colors duration-300">
                     {item}

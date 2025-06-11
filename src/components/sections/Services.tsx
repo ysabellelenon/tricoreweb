@@ -5,33 +5,33 @@ import { motion, useInView } from 'framer-motion';
 
 const services = [
   {
-    icon: '🌐',
-    title: 'Cloud Solutions',
-    description: 'Scalable, secure cloud infrastructure and migration services tailored to your business needs.',
+    icon: '💻',
+    title: 'Software Development',
+    description: 'Custom software solutions designed to meet your specific business requirements and challenges.',
     color: 'from-primary to-accent'
+  },
+  {
+    icon: '🌐',
+    title: 'Website Development',
+    description: 'Professional, responsive websites optimized for performance, user experience, and conversions.',
+    color: 'from-secondary to-primary'
+  },
+  {
+    icon: '📱',
+    title: 'Application Development',
+    description: 'Mobile and web applications built with cutting-edge technologies for all platforms.',
+    color: 'from-accent to-secondary'
   },
   {
     icon: '🔒',
     title: 'Cybersecurity',
     description: 'Comprehensive security solutions to protect your data, systems, and business reputation.',
-    color: 'from-secondary to-primary'
-  },
-  {
-    icon: '💻',
-    title: 'IT Consulting',
-    description: 'Expert guidance to align technology with your business objectives and maximize ROI.',
-    color: 'from-accent to-secondary'
-  },
-  {
-    icon: '⚙️',
-    title: 'Software Development',
-    description: 'Custom applications and solutions built with cutting-edge technologies and methodologies.',
     color: 'from-primary-dark to-secondary'
   },
   {
-    icon: '📊',
-    title: 'Data Analytics',
-    description: 'Transform your data into actionable insights with advanced analytics and visualization.',
+    icon: '🔧',
+    title: 'IT Consulting',
+    description: 'Expert guidance to align technology with your business objectives and maximize ROI.',
     color: 'from-accent to-primary'
   },
   {
@@ -116,7 +116,7 @@ const Services = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Comprehensive IT solutions designed to drive innovation and growth for your business
+            Comprehensive development and IT solutions designed to drive innovation and growth for your business
           </motion.p>
         </div>
         
