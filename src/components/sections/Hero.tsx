@@ -3,6 +3,16 @@
 import { motion } from 'framer-motion';
 
 const Hero = () => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 100, // Offset for navbar
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden" id="hero">
       {/* Background gradient */}
@@ -47,6 +57,7 @@ const Hero = () => {
               className="px-6 py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-medium transition-colors duration-300 btn-glow"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => scrollToSection('services')}
             >
               Explore Services
             </motion.button>
@@ -55,6 +66,7 @@ const Hero = () => {
               className="px-6 py-3 rounded-full border border-surface hover:border-accent text-white font-medium transition-colors duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => scrollToSection('contact')}
             >
               Contact Us
             </motion.button>
@@ -68,6 +80,8 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
+        onClick={() => scrollToSection('services')}
+        style={{ cursor: 'pointer' }}
       >
         <div className="flex flex-col items-center">
           <span className="text-muted text-sm mb-2">Scroll Down</span>
