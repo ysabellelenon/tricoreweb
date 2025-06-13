@@ -6,10 +6,10 @@ import Image from 'next/image';
 
 // Foreground to background: element1 (cloud), element2 (download), element3 (window), element4 (globe)
 const elementConfigs = [
-  { src: '/images/hero_image_element1.png', style: 'lg:right-[8%] lg:top-[24%] w-[340px] h-[220px] z-30', strength: 60, scale: 1.04, shadow: true }, // cloud
-  { src: '/images/hero_image_element2.png', style: 'lg:right-[30%] lg:top-[18%] w-[110px] h-[110px] z-20', strength: 35 }, // download
-  { src: '/images/hero_image_element3.png', style: 'lg:right-[30%] lg:top-[54%] w-[110px] h-[110px] z-20', strength: 25 }, // window
-  { src: '/images/hero_image_element4.png', style: 'lg:right-[10%] lg:top-[54%] w-[120px] h-[120px] z-10', strength: 15 }, // globe
+  { src: '/images/hero_image_element1.png', style: 'right-[8%] top-[24%] w-[340px] h-[220px] z-30', strength: 60, scale: 1.04, shadow: true }, // cloud (moved further right and higher)
+  { src: '/images/hero_image_element2.png', style: 'right-[30%] top-[18%] w-[110px] h-[110px] z-20', strength: 35 }, // download
+  { src: '/images/hero_image_element3.png', style: 'right-[30%] top-[54%] w-[110px] h-[110px] z-20', strength: 25 }, // window
+  { src: '/images/hero_image_element4.png', style: 'right-[10%] top-[54%] w-[120px] h-[120px] z-10', strength: 15 }, // globe (farthest)
 ];
 
 const Hero = () => {
@@ -44,7 +44,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-24 md:pt-32" id="hero" ref={ref}>
+    <section className="relative min-h-screen flex items-center overflow-hidden" id="hero" ref={ref}>
       {/* Background image with parallax */}
       <motion.div className="absolute inset-0 z-0" style={{ y }}>
         <Image
@@ -57,92 +57,82 @@ const Hero = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/10" />
       </motion.div>
-      
-      {/* Content */}
-      <div className="container mx-auto px-4 z-20 relative">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-          {/* Text Content */}
-          <div className="w-full lg:w-1/2 lg:max-w-3xl order-2 lg:order-1">
-            <motion.h1 
-              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <span className="gradient-text">Innovative IT Solutions</span> <br />
-              for the <span className="text-glow">Digital Future</span>
-            </motion.h1>
-            <motion.p 
-              className="text-lg md:text-xl text-muted mb-8 max-w-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              TriCore empowers businesses with cutting-edge technology solutions to navigate the digital landscape with confidence and security.
-            </motion.p>
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-40"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <motion.button 
-                className="w-full sm:w-auto px-6 py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-medium transition-colors duration-300 btn-glow"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection('services')}
-              >
-                Explore Services
-              </motion.button>
-              <motion.button 
-                className="w-full sm:w-auto px-6 py-3 rounded-full border border-surface hover:border-accent text-white font-medium transition-colors duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection('contact')}
-              >
-                Contact Us
-              </motion.button>
-            </motion.div>
-          </div>
-
-          {/* Graphics Container */}
-          <div className="relative w-full lg:w-1/2 h-[400px] lg:h-[600px] order-1 lg:order-2 mt-16 lg:mt-0">
-            {elementConfigs.map((el, i) => (
-              <motion.div
-                key={el.src}
-                className={`absolute ${el.style}`}
-                style={{
-                  translateX: (mouse.x - 0.5) * el.strength,
-                  translateY: (mouse.y - 0.5) * el.strength,
-                  scale: el.scale || 1,
-                  filter: el.shadow ? 'drop-shadow(0 8px 32px rgba(0,201,255,0.25))' : undefined,
-                }}
-                transition={{ type: 'spring', stiffness: 80, damping: 18 }}
-              >
-                <Image
-                  src={el.src}
-                  alt={`Hero Element ${i + 1}`}
-                  fill
-                  className="object-contain pointer-events-none"
-                  quality={100}
-                  priority={i === 0}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-
+      {/* Foreground elements with mouse-follow and depth effect */}
+      {elementConfigs.map((el, i) => (
+        <motion.div
+          key={el.src}
+          className={`absolute ${el.style}`}
+          style={{
+            translateX: (mouse.x - 0.5) * el.strength,
+            translateY: (mouse.y - 0.5) * el.strength,
+            scale: el.scale || 1,
+            filter: el.shadow ? 'drop-shadow(0 8px 32px rgba(0,201,255,0.25))' : undefined,
+          }}
+          transition={{ type: 'spring', stiffness: 80, damping: 18 }}
+        >
+          <Image
+            src={el.src}
+            alt={`Hero Element ${i + 1}`}
+            fill
+            className="object-contain pointer-events-none"
+            quality={100}
+            priority={i === 0}
+          />
+        </motion.div>
+      ))}
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 z-10 grid-pattern opacity-20" />
-      
       {/* Animated shapes */}
       <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-primary opacity-5 blur-3xl z-0" />
       <div className="absolute bottom-20 left-20 w-72 h-72 rounded-full bg-secondary opacity-5 blur-3xl z-0" />
-
+      {/* Content */}
+      <div className="container mx-auto px-4 z-20 relative">
+        <div className="max-w-3xl">
+          <motion.h1 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="gradient-text">Innovative IT Solutions</span> <br />
+            for the <span className="text-glow">Digital Future</span>
+          </motion.h1>
+          <motion.p 
+            className="text-lg md:text-xl text-muted mb-8 max-w-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            TriCore empowers businesses with cutting-edge technology solutions to navigate the digital landscape with confidence and security.
+          </motion.p>
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <motion.button 
+              className="px-6 py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-medium transition-colors duration-300 btn-glow"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => scrollToSection('services')}
+            >
+              Explore Services
+            </motion.button>
+            <motion.button 
+              className="px-6 py-3 rounded-full border border-surface hover:border-accent text-white font-medium transition-colors duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => scrollToSection('contact')}
+            >
+              Contact Us
+            </motion.button>
+          </motion.div>
+        </div>
+      </div>
       {/* Scroll indicator */}
       <motion.div 
-        className="absolute bottom-16 md:bottom-12 left-1/2 transform -translate-x-1/2 z-20 hidden md:flex"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
