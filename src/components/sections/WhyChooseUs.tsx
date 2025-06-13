@@ -107,10 +107,14 @@ const WhyChooseUs = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 z-10" />
                   <div className="absolute inset-0 grid-pattern opacity-30" />
                   
-                  {/* Placeholder for an actual image */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-background to-surface flex items-center justify-center">
-                    <span className="text-6xl">💻</span>
-                  </div>
+                  {/* Actual image replacing the placeholder */}
+                  <Image
+                    src="/images/why_choose_us.png"
+                    alt="Why Choose Us Illustration"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </motion.div>
               
