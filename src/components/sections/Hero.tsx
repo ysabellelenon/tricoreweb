@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 // Foreground to background: element1 (cloud), element2 (download), element3 (window), element4 (globe)
 const elementConfigs = [
-  { src: '/images/hero_image_element1.png', style: 'right-[18%] top-[32%] w-[340px] h-[220px] z-30', strength: 60, scale: 1.04, shadow: true }, // cloud (closest)
+  { src: '/images/hero_image_element1.png', style: 'right-[8%] top-[24%] w-[340px] h-[220px] z-30', strength: 60, scale: 1.04, shadow: true }, // cloud (moved further right and higher)
   { src: '/images/hero_image_element2.png', style: 'right-[30%] top-[18%] w-[110px] h-[110px] z-20', strength: 35 }, // download
   { src: '/images/hero_image_element3.png', style: 'right-[30%] top-[54%] w-[110px] h-[110px] z-20', strength: 25 }, // window
   { src: '/images/hero_image_element4.png', style: 'right-[10%] top-[54%] w-[120px] h-[120px] z-10', strength: 15 }, // globe (farthest)
