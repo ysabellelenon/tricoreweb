@@ -1,9 +1,14 @@
 "use client";
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import Image from 'next/image';
 
 const Hero = () => {
+  const ref = useRef(null);
+  const { scrollY } = useScroll();
+  // Parallax: move image up to 60px slower than scroll
+  const y = useTransform(scrollY, [0, 400], [0, 60]);
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -15,9 +20,9 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden" id="hero">
-      {/* Hero Image */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative min-h-screen flex items-center overflow-hidden" id="hero" ref={ref}>
+      {/* Hero Image with Parallax */}
+      <motion.div className="absolute inset-0 z-0" style={{ y }}>
         <Image
           src="/images/hero_image.png"
           alt="TriCore Web Solutions Hero"
@@ -28,7 +33,7 @@ const Hero = () => {
         />
         {/* Lighter overlay for better image visibility */}
         <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/10" />
-      </div>
+      </motion.div>
       
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 z-10 grid-pattern opacity-20" />

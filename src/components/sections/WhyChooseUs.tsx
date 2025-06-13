@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
 const features = [
@@ -72,9 +72,13 @@ const FeatureCard = ({ feature, index }: { feature: typeof features[0], index: n
 const WhyChooseUs = () => {
   const titleRef = useRef(null);
   const isInView = useInView(titleRef, { once: true, amount: 0.2 });
+  const sectionRef = useRef(null);
+  const { scrollY } = useScroll();
+  // Parallax: move image up to 40px slower than scroll
+  const y = useTransform(scrollY, [0, 400], [0, 40]);
   
   return (
-    <section className="py-20 relative overflow-hidden" id="solutions">
+    <section className="py-20 relative overflow-hidden" id="solutions" ref={sectionRef}>
       {/* Background elements */}
       <div className="absolute top-0 left-0 w-full h-full grid-pattern opacity-10 z-0" />
       <div className="absolute top-40 right-40 w-80 h-80 rounded-full bg-primary opacity-5 blur-3xl" />
@@ -95,7 +99,7 @@ const WhyChooseUs = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side with image */}
           <div className="order-2 lg:order-1">
-            <div className="relative">
+            <motion.div className="relative" style={{ y }}>
               <motion.div
                 className="relative z-10 rounded-2xl overflow-hidden border border-surface glass-effect"
                 initial={{ opacity: 0, x: -50 }}
@@ -147,7 +151,7 @@ const WhyChooseUs = () => {
                   <span className="text-muted text-sm">Client Satisfaction</span>
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
           </div>
           
           {/* Right side content */}
