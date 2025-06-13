@@ -1,14 +1,38 @@
 "use client";
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
+
+// Foreground to background: element1 (cloud), element2 (download), element3 (window), element4 (globe)
+const elementConfigs = [
+  { src: '/images/hero_image_element1.png', style: 'right-[18%] top-[32%] w-[340px] h-[220px] z-30', strength: 60, scale: 1.04, shadow: true }, // cloud (closest)
+  { src: '/images/hero_image_element2.png', style: 'right-[30%] top-[18%] w-[110px] h-[110px] z-20', strength: 35 }, // download
+  { src: '/images/hero_image_element3.png', style: 'right-[30%] top-[54%] w-[110px] h-[110px] z-20', strength: 25 }, // window
+  { src: '/images/hero_image_element4.png', style: 'right-[10%] top-[54%] w-[120px] h-[120px] z-10', strength: 15 }, // globe (farthest)
+];
 
 const Hero = () => {
   const ref = useRef(null);
   const { scrollY } = useScroll();
-  // Parallax: move image up to 60px slower than scroll
+  // Parallax: move bg up to 60px slower than scroll
   const y = useTransform(scrollY, [0, 400], [0, 60]);
+
+  // Mouse tracking for element parallax
+  const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const section = ref.current as HTMLElement | null;
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      setMouse({ x, y });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -21,27 +45,46 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden" id="hero" ref={ref}>
-      {/* Hero Image with Parallax */}
+      {/* Background image with parallax */}
       <motion.div className="absolute inset-0 z-0" style={{ y }}>
         <Image
-          src="/images/hero_image.png"
-          alt="TriCore Web Solutions Hero"
+          src="/images/hero_image_bg.jpg"
+          alt="TriCore Hero Background"
           fill
           priority
           className="object-cover"
           quality={100}
         />
-        {/* Lighter overlay for better image visibility */}
         <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/10" />
       </motion.div>
-      
+      {/* Foreground elements with mouse-follow and depth effect */}
+      {elementConfigs.map((el, i) => (
+        <motion.div
+          key={el.src}
+          className={`absolute ${el.style}`}
+          style={{
+            translateX: (mouse.x - 0.5) * el.strength,
+            translateY: (mouse.y - 0.5) * el.strength,
+            scale: el.scale || 1,
+            filter: el.shadow ? 'drop-shadow(0 8px 32px rgba(0,201,255,0.25))' : undefined,
+          }}
+          transition={{ type: 'spring', stiffness: 80, damping: 18 }}
+        >
+          <Image
+            src={el.src}
+            alt={`Hero Element ${i + 1}`}
+            fill
+            className="object-contain pointer-events-none"
+            quality={100}
+            priority={i === 0}
+          />
+        </motion.div>
+      ))}
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 z-10 grid-pattern opacity-20" />
-      
       {/* Animated shapes */}
       <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-primary opacity-5 blur-3xl z-0" />
       <div className="absolute bottom-20 left-20 w-72 h-72 rounded-full bg-secondary opacity-5 blur-3xl z-0" />
-      
       {/* Content */}
       <div className="container mx-auto px-4 z-20 relative">
         <div className="max-w-3xl">
@@ -54,7 +97,6 @@ const Hero = () => {
             <span className="gradient-text">Innovative IT Solutions</span> <br />
             for the <span className="text-glow">Digital Future</span>
           </motion.h1>
-          
           <motion.p 
             className="text-lg md:text-xl text-muted mb-8 max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
@@ -63,7 +105,6 @@ const Hero = () => {
           >
             TriCore empowers businesses with cutting-edge technology solutions to navigate the digital landscape with confidence and security.
           </motion.p>
-          
           <motion.div 
             className="flex flex-col sm:flex-row gap-4"
             initial={{ opacity: 0, y: 20 }}
@@ -78,7 +119,6 @@ const Hero = () => {
             >
               Explore Services
             </motion.button>
-            
             <motion.button 
               className="px-6 py-3 rounded-full border border-surface hover:border-accent text-white font-medium transition-colors duration-300"
               whileHover={{ scale: 1.05 }}
@@ -90,7 +130,6 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
-      
       {/* Scroll indicator */}
       <motion.div 
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
