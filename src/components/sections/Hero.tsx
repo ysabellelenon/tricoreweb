@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const Hero = () => {
   const scrollToSection = (id: string) => {
@@ -15,8 +16,19 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden" id="hero">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background/90 to-background/80 z-0" />
+      {/* Hero Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/hero_image.png"
+          alt="TriCore Web Solutions Hero"
+          fill
+          priority
+          className="object-cover"
+          quality={100}
+        />
+        {/* Lighter overlay for better image visibility */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/10" />
+      </div>
       
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 z-10 grid-pattern opacity-20" />
