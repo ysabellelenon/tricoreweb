@@ -6,10 +6,10 @@ import Image from 'next/image';
 
 // Foreground to background: element1 (cloud), element2 (download), element3 (window), element4 (globe)
 const elementConfigs = [
-  { src: '/images/hero_image_element1.png', style: 'right-[8%] top-[35%] w-[340px] h-[220px] z-30', strength: 60, scale: 1.04, shadow: true }, // cloud (moved further right and higher)
-  { src: '/images/hero_image_element2.png', style: 'right-[30%] top-[30%] w-[110px] h-[110px] z-20', strength: 35 }, // download
-  { src: '/images/hero_image_element3.png', style: 'right-[30%] top-[65%] w-[110px] h-[110px] z-20', strength: 25 }, // window
-  { src: '/images/hero_image_element4.png', style: 'right-[10%] top-[65%] w-[120px] h-[120px] z-10', strength: 15 }, // globe (farthest)
+  { src: '/images/hero_image_element1.png', style: 'right-[8%] top-[35%] w-[340px] h-[220px] xl:z-30 z-20', strength: 60, scale: 1.04, shadow: true }, // cloud (moved further right and higher)
+  { src: '/images/hero_image_element2.png', style: 'right-[30%] top-[30%] w-[110px] h-[110px] xl:z-20 z-10', strength: 35 }, // download
+  { src: '/images/hero_image_element3.png', style: 'right-[30%] top-[65%] w-[110px] h-[110px] xl:z-20 z-10', strength: 25 }, // window
+  { src: '/images/hero_image_element4.png', style: 'right-[10%] top-[65%] w-[120px] h-[120px] xl:z-10 z-[5]', strength: 15 }, // globe (farthest)
 ];
 
 const Hero = () => {
@@ -87,9 +87,12 @@ const Hero = () => {
       <div className="absolute bottom-20 left-20 w-72 h-72 rounded-full bg-secondary opacity-5 blur-3xl z-0" />
       {/* Content */}
       <div className="container mx-auto px-4 z-20 relative">
-        <div className="max-w-3xl">
+        <div className="max-w-3xl relative xl:py-0 py-8 xl:px-0 px-4">
+          {/* Mobile background overlay - only visible on screens 1023px and below */}
+          <div className="absolute inset-0 glass-effect rounded-2xl bg-black/40 backdrop-blur-md xl:hidden z-[-1]" />
+          
           <motion.h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 relative z-30"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -98,7 +101,7 @@ const Hero = () => {
             for the <span className="text-glow">Digital Future</span>
           </motion.h1>
           <motion.p 
-            className="text-lg md:text-xl text-muted mb-8 max-w-2xl"
+            className="text-lg md:text-xl text-muted xl:text-muted text-gray-200 mb-8 max-w-2xl relative z-30"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -106,7 +109,7 @@ const Hero = () => {
             TriCore empowers businesses with cutting-edge technology solutions to navigate the digital landscape with confidence and security.
           </motion.p>
           <motion.div 
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4 relative z-30"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
