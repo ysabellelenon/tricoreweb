@@ -117,7 +117,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-muted mb-1">Email</h4>
-                    <p className="text-foreground">solutionstricore@gmail.com</p>
+                    <p className="text-foreground">admin@tricoresolutions.net</p>
                   </div>
                 </div>
               </div>
@@ -154,7 +154,7 @@ const Contact = () => {
               </motion.div>
             ) : (
               <form 
-                action="https://formsubmit.co/solutionstricore@gmail.com" 
+                action="https://formsubmit.co/admin@tricoresolutions.net" 
                 method="POST" 
                 onSubmit={handleSubmit} 
                 className="space-y-6"
