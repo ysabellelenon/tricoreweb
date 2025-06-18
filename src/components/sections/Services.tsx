@@ -66,23 +66,6 @@ const ServiceCard = ({ service, index }: { service: typeof services[0], index: n
         
         <h3 className="text-xl font-bold mb-3">{service.title}</h3>
         <p className="text-muted">{service.description}</p>
-        
-        <motion.button
-          className="mt-4 text-sm font-medium text-accent flex items-center"
-          whileHover={{ x: 5 }}
-          transition={{ type: 'spring', stiffness: 400 }}
-        >
-          Learn more
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            className="h-4 w-4 ml-1" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </motion.button>
       </div>
     </motion.div>
   );
