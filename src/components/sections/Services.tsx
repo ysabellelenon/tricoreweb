@@ -1,72 +1,112 @@
 "use client";
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import Image from 'next/image';
 import AnimatedBorder from '@/components/ui/AnimatedBorder';
 
 const services = [
   {
-    icon: '💻',
+    icon: '/images/software-development.png',
     title: 'Software Development',
     description: 'Custom software solutions designed to meet your specific business requirements and challenges.',
     color: 'from-primary to-accent'
   },
   {
-    icon: '🌐',
+    icon: '/images/website-development.png',
     title: 'Website Development',
     description: 'Professional, responsive websites optimized for performance, user experience, and conversions.',
     color: 'from-secondary to-primary'
   },
   {
-    icon: '📱',
+    icon: '/images/application-development.jpg',
     title: 'Application Development',
     description: 'Mobile and web applications built with cutting-edge technologies for all platforms.',
     color: 'from-accent to-secondary'
   },
   {
-    icon: '🔒',
+    icon: '/images/cybersecurity.jpg',
     title: 'Cybersecurity',
     description: 'Comprehensive security solutions to protect your data, systems, and business reputation.',
     color: 'from-primary-dark to-secondary'
   },
   {
-    icon: '🔧',
+    icon: '/images/consulting.jpg',
     title: 'IT Consulting',
     description: 'Expert guidance to align technology with your business objectives and maximize ROI.',
     color: 'from-accent to-primary'
   },
   {
-    icon: '🔄',
+    icon: '/images/managed-services.jpg',
     title: 'Managed IT Services',
     description: '24/7 monitoring, maintenance, and support to keep your systems running smoothly.',
     color: 'from-secondary to-accent'
   }
 ];
 
-const ServiceCard = ({ service, index }: { service: typeof services[0], index: number }) => {
-  const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: true, amount: 0.2 });
+const ServiceCard = ({ 
+  service, 
+  index, 
+  isInView, 
+  hoveredIndex, 
+  setHoveredIndex 
+}: { 
+  service: typeof services[0], 
+  index: number, 
+  isInView: boolean,
+  hoveredIndex: number | null,
+  setHoveredIndex: (index: number | null) => void
+}) => {
+  const isHovered = hoveredIndex === index;
+  const isOtherHovered = hoveredIndex !== null && hoveredIndex !== index;
+  const isOdd = index % 2 === 1;
   
   return (
     <motion.div
-      ref={cardRef}
-      className="glass-effect rounded-xl overflow-hidden relative"
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -10, transition: { duration: 0.3 } }}
+      className="overflow-hidden relative min-h-[500px] flex flex-col flex-1"
+      style={{
+        background: isOdd 
+          ? '#171274'
+          : '#071C52'
+      }}
+      initial={{ opacity: 0 }}
+      animate={isInView ? { 
+        opacity: 1,
+        clipPath: "inset(0% 0% 0% 0%)",
+        scale: isHovered ? 1.1 : 1,
+        filter: isOtherHovered ? "blur(4px)" : "blur(0px)",
+        zIndex: isHovered ? 10 : 1
+      } : { 
+        opacity: 0,
+        clipPath: "inset(0% 100% 0% 0%)"
+      }}
+      transition={{ 
+        duration: isInView ? 0.6 : 0.6, 
+        delay: isInView ? index * 0.6 : 0,
+        ease: "easeOut",
+        scale: { duration: 0.3 },
+        filter: { duration: 0.3 }
+      }}
+      onHoverStart={() => setHoveredIndex(index)}
+      onHoverEnd={() => setHoveredIndex(null)}
+      whileHover={{ y: -10 }}
     >
-      {/* Gradient background */}
-      <div className={`absolute inset-0 opacity-10 bg-gradient-to-br ${service.color}`} />
+      {/* Background Image */}
+      {service.icon && (
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src={service.icon} 
+            alt={service.title}
+            fill
+            className="object-cover opacity-30"
+          />
+        </div>
+      )}
       
       {/* Card content */}
-      <div className="p-6 relative z-10">
-        <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${service.color} flex items-center justify-center text-2xl mb-4`}>
-          {service.icon}
-        </div>
-        
-        <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-        <p className="text-muted">{service.description}</p>
+      <div className="p-6 relative z-10 flex flex-col h-full text-center justify-center">
+        <h3 className="text-2xl font-bold mb-3 leading-tight">{service.title}</h3>
+        <p className="text-muted text-sm leading-relaxed">{service.description}</p>
       </div>
     </motion.div>
   );
@@ -74,7 +114,10 @@ const ServiceCard = ({ service, index }: { service: typeof services[0], index: n
 
 const Services = () => {
   const titleRef = useRef(null);
-  const isInView = useInView(titleRef, { once: true, amount: 0.2 });
+  const cardsRef = useRef(null);
+  const titleInView = useInView(titleRef, { once: true, amount: 0.2 });
+  const cardsInView = useInView(cardsRef, { once: true, amount: 0.1 });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   
   return (
     <section className="py-20 relative overflow-hidden" id="services">
@@ -85,14 +128,14 @@ const Services = () => {
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary opacity-5 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-secondary opacity-5 rounded-full blur-3xl" />
       
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16" ref={titleRef}>
+      <div className="relative z-10">
+        <div className="text-center mb-16 container mx-auto px-4" ref={titleRef}>
           <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-8 flex justify-center items-center gap-4 flex-wrap" style={{ fontFamily: 'Creato Display, sans-serif' }}>
             {['Our', 'Services'].map((word, index) => (
               <motion.span
                 key={word}
                 initial={{ opacity: 0, color: index === 0 ? '#00B2E3' : '#ffffff' }}
-                animate={isInView ? { 
+                animate={titleInView ? { 
                   opacity: [0, 1, 1],
                   color: index === 0 
                     ? ['#00B2E3', '#00B2E3', '#ffffff']  // "Our": blue to white
@@ -113,16 +156,26 @@ const Services = () => {
           <motion.p 
             className="text-muted max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={titleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: 0.4 }}
           >
             Comprehensive development and IT solutions designed to drive innovation and growth for your business
           </motion.p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div 
+          ref={cardsRef}
+          className="flex flex-row gap-0 overflow-visible justify-center items-stretch w-full py-12"
+        >
           {services.map((service, index) => (
-            <ServiceCard key={service.title} service={service} index={index} />
+            <ServiceCard 
+              key={service.title} 
+              service={service} 
+              index={index} 
+              isInView={cardsInView}
+              hoveredIndex={hoveredIndex}
+              setHoveredIndex={setHoveredIndex}
+            />
           ))}
         </div>
       </div>
