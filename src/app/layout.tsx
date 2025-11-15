@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import LoaderWrapper from "@/components/ui/LoaderWrapper";
 
 export const metadata = {
   title: "TriCore Information Technology Solutions",
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased min-h-screen">
-        <Navbar />
-        {children}
-        <Footer />
+        <LoaderWrapper>
+          <Navbar />
+          {children}
+          <Footer />
+        </LoaderWrapper>
       </body>
     </html>
   );

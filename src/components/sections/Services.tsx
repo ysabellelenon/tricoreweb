@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import AnimatedBorder from '@/components/ui/AnimatedBorder';
 
 const services = [
   {
@@ -77,6 +78,8 @@ const Services = () => {
   
   return (
     <section className="py-20 relative overflow-hidden" id="services">
+      <AnimatedBorder position="top" delay={0} />
+      <AnimatedBorder position="bottom" delay={0} />
       {/* Background elements */}
       <div className="absolute top-0 left-0 w-full h-full grid-pattern opacity-10 z-0" />
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary opacity-5 rounded-full blur-3xl" />
@@ -84,20 +87,34 @@ const Services = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16" ref={titleRef}>
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6 }}
-          >
-            Our <span className="gradient-text">Services</span>
-          </motion.h2>
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-8 flex justify-center items-center gap-4 flex-wrap">
+            {['Our', 'Services'].map((word, index) => (
+              <motion.span
+                key={word}
+                initial={{ opacity: 0, color: index === 0 ? '#00B2E3' : '#ffffff' }}
+                animate={isInView ? { 
+                  opacity: [0, 1, 1],
+                  color: index === 0 
+                    ? ['#00B2E3', '#00B2E3', '#ffffff']  // "Our": blue to white
+                    : ['#ffffff', '#ffffff', '#00B2E3']  // "Services": white to blue
+                } : { opacity: 0, color: index === 0 ? '#00B2E3' : '#ffffff' }}
+                transition={{
+                  duration: 0.4,
+                  delay: index * 0.2,
+                  times: [0, 0.3, 1],
+                  ease: 'easeOut'
+                }}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </h2>
           
           <motion.p 
             className="text-muted max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
           >
             Comprehensive development and IT solutions designed to drive innovation and growth for your business
           </motion.p>

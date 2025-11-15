@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import AnimatedBorder from '@/components/ui/AnimatedBorder';
 
 const features = [
   {
@@ -79,23 +80,40 @@ const WhyChooseUs = () => {
   
   return (
     <section className="py-20 relative overflow-hidden" id="solutions" ref={sectionRef}>
+      <AnimatedBorder position="top" delay={0} />
+      <AnimatedBorder position="bottom" delay={0.5} />
       {/* Background elements */}
       <div className="absolute top-0 left-0 w-full h-full grid-pattern opacity-10 z-0" />
       <div className="absolute top-40 right-40 w-80 h-80 rounded-full bg-primary opacity-5 blur-3xl" />
       <div className="absolute bottom-40 left-40 w-80 h-80 rounded-full bg-secondary opacity-5 blur-3xl" />
       
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Why <span className="gradient-text">Choose Us</span>
+        <div className="text-center mb-16" ref={titleRef}>
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-4 flex justify-center items-center gap-4 flex-wrap">
+            {['Why', 'Choose', 'Us'].map((word, index) => (
+              <motion.span
+                key={word}
+                initial={{ opacity: 0, color: index === 0 ? '#00B2E3' : index === 1 ? '#ffffff' : '#00B2E3' }}
+                animate={isInView ? { 
+                  opacity: [0, 1, 1],
+                  color: index === 0 
+                    ? ['#00B2E3', '#00B2E3', '#ffffff']  // "Why": blue to white
+                    : index === 1
+                    ? ['#ffffff', '#ffffff', '#00B2E3']  // "Choose": white to blue
+                    : ['#00B2E3', '#00B2E3', '#ffffff']  // "Us": blue to white
+                } : { opacity: 0, color: index === 0 ? '#00B2E3' : index === 1 ? '#ffffff' : '#00B2E3' }}
+                transition={{
+                  duration: 0.4,
+                  delay: index * 0.2,
+                  times: [0, 0.3, 1],
+                  ease: 'easeOut'
+                }}
+              >
+                {word}
+              </motion.span>
+            ))}
           </h2>
-        </motion.div>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side with image */}
           <div className="order-2 lg:order-1">
