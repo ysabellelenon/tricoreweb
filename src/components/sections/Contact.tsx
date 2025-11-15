@@ -65,7 +65,7 @@ const Contact = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16" ref={titleRef}>
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-8 flex justify-center items-center gap-4 flex-wrap">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-8 flex justify-center items-center gap-4 flex-wrap" style={{ fontFamily: 'Creato Display, sans-serif' }}>
             {['Get', 'In', 'Touch'].map((word, index) => (
               <motion.span
                 key={word}

@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import AnimatedBorder from '@/components/ui/AnimatedBorder';
 import ScrambleText from '@/components/ui/ScrambleText';
+import AutoScrambleText from '@/components/ui/AutoScrambleText';
 
 const Hero = () => {
   const ref = useRef(null);
@@ -42,7 +43,7 @@ const Hero = () => {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/images/hero_video2.mp4" type="video/mp4" />
+          <source src="/images/hero_video.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/65 to-black/55" />
       </motion.div>
@@ -55,24 +56,24 @@ const Hero = () => {
       {/* Main content */}
       <div className="relative z-20 flex-1 flex flex-col justify-center items-center px-4">
         <div className="max-w-7xl w-full text-center">
-          {/* Main headline - Scrolling marquee */}
-          <div className="mb-12 overflow-hidden whitespace-nowrap relative">
-            <motion.div
-              className="inline-block"
-              initial={{ x: 0 }}
-              animate={{ x: "-50%" }}
-              transition={{ 
-                duration: 10,
-                repeat: Infinity,
-                ease: "linear",
-                repeatType: "loop"
-              }}
-            >
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-tight inline-block">
-                You Name It. We Build It.&nbsp;&nbsp;You Name It. We Build It.&nbsp;&nbsp;
-              </h1>
-            </motion.div>
-          </div>
+          {/* Main headline - Static with changing word */}
+          <motion.h1 
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-12"
+            style={{ fontFamily: 'Creato Display, sans-serif' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            You Name It.<br />
+            We{' '}
+            <AutoScrambleText 
+              words={['Build', 'Design', 'Automate', 'Digitize', 'Develop']}
+              className="text-accent"
+              style={{ fontFamily: 'Creato Display, sans-serif' }}
+              interval={2000}
+            />{' '}
+            It.
+          </motion.h1>
 
           {/* Navigation bar */}
           <motion.div
@@ -113,7 +114,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <p className="text-white/80 text-base sm:text-lg max-w-3xl mx-auto">
+          <p className="text-white/80 text-base sm:text-lg max-w-3xl mx-auto" style={{ fontFamily: 'Alte Haas Grotesk, sans-serif' }}>
             We don't just solve problems, we create opportunities through technology.
           </p>
         </motion.div>

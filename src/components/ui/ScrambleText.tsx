@@ -13,7 +13,8 @@ const ScrambleText = ({ text, className = '', style }: ScrambleTextProps) => {
   const [isHovering, setIsHovering] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const charsUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const charsLower = 'abcdefghijklmnopqrstuvwxyz';
 
   useEffect(() => {
     if (isHovering) {
@@ -33,7 +34,10 @@ const ScrambleText = ({ text, className = '', style }: ScrambleTextProps) => {
               if (index < iteration) {
                 return text[index];
               }
-              return chars[Math.floor(Math.random() * chars.length)];
+              // Use uppercase or lowercase based on target character
+              const isUpperCase = char === char.toUpperCase();
+              const charSet = isUpperCase ? charsUpper : charsLower;
+              return charSet[Math.floor(Math.random() * charSet.length)];
             })
             .join('')
         );
