@@ -33,12 +33,11 @@ const WhyChooseUs = () => {
 
   // Calculate which heading should be active based on scroll progress
   // Each heading gets 1/3 of the scroll progress
-  // Require heading to be more centered (around 60% into segment) before becoming active
+  // Adjusted to ensure all three headings are accessible
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const segmentSize = 1 / headings.length;
-    // Require heading to be at least 60% through its segment before becoming active
-    // This ensures the heading is more centered before content changes
-    const adjustedProgress = latest - (segmentSize * 0.4);
+    // More lenient calculation to ensure all headings are accessible
+    const adjustedProgress = latest - (segmentSize * 0.2);
     let newIndex = Math.floor(adjustedProgress / segmentSize);
     newIndex = Math.min(newIndex, headings.length - 1);
     newIndex = Math.max(newIndex, 0);
@@ -52,20 +51,23 @@ const WhyChooseUs = () => {
   // Each heading is 400px apart, so we need to move by (headings.length - 1) * 400 pixels
   // Start with first heading centered, end with last heading centered
   // Add initial offset to move headings down so first one is visible
-  const totalScrollDistance = (headings.length - 1) * 400;
+  const headingSpacing = 400;
+  const totalScrollDistance = (headings.length - 1) * headingSpacing;
   const initialOffset = 500; // Move down initially to show first heading
+  const bottomSpacer = 500; // Spacer height for last heading
   // Start with offset (first heading visible), end at offset - totalScrollDistance (last heading visible)
+  // Extended range to ensure last heading is fully accessible with bottom spacer
   const leftScrollY = useTransform(
     scrollYProgress,
     [0, 1],
-    [initialOffset, initialOffset - totalScrollDistance]
+    [initialOffset, initialOffset - totalScrollDistance - bottomSpacer]
   );
 
   // Calculate section height to allow proper scroll through all headings
-  // Need enough height for sticky to work - each heading needs ~150vh of scroll space
-  // Total: 3 headings * 150vh + 100vh for sticky element = 550vh minimum
-  // Using 600vh to ensure smooth scrolling
-  const sectionHeight = `600vh`;
+  // Need enough height for sticky to work - each heading needs ~250vh of scroll space
+  // Total: 3 headings * 250vh = 750vh minimum
+  // Using 800vh to ensure smooth scrolling and all headings are fully accessible
+  const sectionHeight = `800vh`;
 
   return (
     <section 
@@ -106,7 +108,7 @@ const WhyChooseUs = () => {
                     <motion.h3
                       key={index}
                       className={`text-5xl md:text-6xl lg:text-7xl font-bold transition-all duration-500 ${
-                        index < headings.length - 1 ? 'mb-[400px]' : ''
+                        index < headings.length - 1 ? 'mb-[400px]' : 'mb-[calc(50vh-200px)]'
                       }`}
                       style={{ fontFamily: 'Creato Display, sans-serif' }}
                       animate={{
