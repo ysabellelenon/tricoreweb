@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import AnimatedBorder from '@/components/ui/AnimatedBorder';
+import styles from './Services.responsive.module.css';
 
 const services = [
   {
@@ -63,7 +64,7 @@ const ServiceCard = ({
   
   return (
     <motion.div
-      className="overflow-hidden relative min-h-[500px] flex flex-col flex-1"
+      className={`overflow-hidden relative min-h-[500px] flex flex-col flex-1 ${styles.serviceCard}`}
       style={{
         background: isOdd 
           ? '#171274'
@@ -91,9 +92,9 @@ const ServiceCard = ({
       onHoverEnd={() => setHoveredIndex(null)}
       whileHover={{ y: -10 }}
     >
-      {/* Background Image */}
+      {/* Background Image - visible on all screens */}
       {service.icon && (
-        <div className="absolute inset-0 z-0">
+        <div className={`absolute inset-0 z-0 ${styles.serviceCardBackground}`}>
           <Image 
             src={service.icon} 
             alt={service.title}
@@ -104,9 +105,11 @@ const ServiceCard = ({
       )}
       
       {/* Card content */}
-      <div className="p-6 relative z-10 flex flex-col h-full text-center justify-center">
-        <h3 className="text-2xl font-bold mb-3 leading-tight">{service.title}</h3>
-        <p className="text-muted text-sm leading-relaxed">{service.description}</p>
+      <div className={`p-6 relative z-10 flex flex-col h-full text-center justify-center ${styles.serviceCardContent}`}>
+        <div className={styles.serviceCardText}>
+          <h3 className={`text-2xl font-bold mb-3 leading-tight ${styles.serviceCardTitle}`}>{service.title}</h3>
+          <p className={`text-muted text-sm leading-relaxed ${styles.serviceCardDescription}`}>{service.description}</p>
+        </div>
       </div>
     </motion.div>
   );
@@ -165,7 +168,7 @@ const Services = () => {
         
         <div 
           ref={cardsRef}
-          className="flex flex-row gap-0 overflow-visible justify-center items-stretch w-full py-12"
+          className={`flex flex-row gap-0 overflow-visible justify-center items-stretch w-full py-12 ${styles.cardsContainer}`}
         >
           {services.map((service, index) => (
             <ServiceCard 

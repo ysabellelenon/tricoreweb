@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import AnimatedBorder from '@/components/ui/AnimatedBorder';
+import styles from './Partners.responsive.module.css';
 
 const Partners = () => {
   const titleRef = useRef(null);
@@ -41,12 +42,12 @@ const Partners = () => {
           <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#000212] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#000212] to-transparent z-10 pointer-events-none" />
           
-          <div className="flex animate-scroll">
+          <div className={`flex animate-scroll ${styles.partnersScrollAnimation}`}>
             {/* First set of logos */}
             {['/images/le.png', '/images/JAE.png', '/images/rjlm.png', '/images/RBC.png', '/images/Mustela.png'].map((logo, index) => (
               <div
                 key={`first-${index}`}
-                className="flex-shrink-0 mx-16 flex items-center justify-center"
+                className={`flex-shrink-0 mx-16 flex items-center justify-center ${styles.partnersLogoItem}`}
               >
                 <div className="relative w-[100px] h-[60px]">
                   <Image
@@ -63,7 +64,7 @@ const Partners = () => {
             {['/images/le.png', '/images/JAE.png', '/images/rjlm.png', '/images/RBC.png', '/images/Mustela.png'].map((logo, index) => (
               <div
                 key={`second-${index}`}
-                className="flex-shrink-0 mx-16 flex items-center justify-center"
+                className={`flex-shrink-0 mx-16 flex items-center justify-center ${styles.partnersLogoItem}`}
               >
                 <div className="relative w-[100px] h-[60px]">
                   <Image

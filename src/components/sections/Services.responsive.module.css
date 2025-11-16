@@ -1,0 +1,79 @@
+/* Responsive styles for Services section - ONLY affects responsive screens (max-width: 1024px) */
+/* Main desktop styles remain completely untouched */
+
+/* Make cards container stack vertically and card content horizontal on responsive screens (tablet and below) */
+@media (max-width: 1024px) {
+  .cardsContainer {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  .cardsContainer > * {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .serviceCard {
+    flex-direction: row !important;
+    min-height: auto !important;
+    align-items: center !important;
+  }
+
+  /* Ensure background image is visible on responsive screens */
+  .serviceCardBackground {
+    opacity: 0.3 !important;
+    display: block !important;
+  }
+
+  .serviceCardContent {
+    flex-direction: row !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 1.5rem;
+    padding: 1.5rem !important;
+  }
+
+  .serviceCardText {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .serviceCardTitle {
+    margin-bottom: 0.5rem !important;
+    text-align: left !important;
+  }
+
+  .serviceCardDescription {
+    text-align: left !important;
+  }
+}
+
+/* For very small screens, adjust layout */
+@media (max-width: 640px) {
+  .serviceCard {
+    flex-direction: column !important;
+    min-height: auto !important;
+  }
+
+  /* Background image remains visible */
+  .serviceCardBackground {
+    opacity: 0.3 !important;
+    display: block !important;
+  }
+
+  .serviceCardContent {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 1rem;
+  }
+
+  .serviceCardTitle {
+    text-align: center !important;
+  }
+
+  .serviceCardDescription {
+    text-align: center !important;
+  }
+}
+

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import Logo from '@/components/ui/Logo';
+import styles from './portfolio.responsive.module.css';
 
 // Portfolio projects data (same as in About.tsx)
 const projects = [
@@ -220,7 +221,7 @@ const ProjectCard = ({
 
   return (
     <motion.div
-      className="group relative overflow-hidden rounded-2xl cursor-pointer"
+      className={`group relative overflow-hidden rounded-2xl cursor-pointer ${styles.projectCard}`}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -257,15 +258,15 @@ const ProjectCard = ({
       <div className={`absolute inset-0 ${project.video ? 'bg-black/20 backdrop-blur-sm group-hover:bg-black/10' : 'bg-black/40 backdrop-blur-sm group-hover:bg-black/20'} transition-all duration-300`} />
 
       {/* Content */}
-      <div className="relative z-10 p-8 h-full min-h-[400px] flex flex-col justify-between">
+      <div className={`relative z-10 p-8 h-full min-h-[400px] flex flex-col justify-between ${styles.projectCardContent}`}>
         {/* Top section */}
         <div>
-          <div className="inline-block px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-semibold mb-4">
+          <div className={`inline-block px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-semibold mb-4 ${styles.projectCategory}`}>
             {project.category}
           </div>
           
           <h3 
-            className="text-3xl md:text-4xl font-bold mb-3 text-white"
+            className={`text-3xl md:text-4xl font-bold mb-3 text-white ${styles.projectTitle}`}
             style={{ fontFamily: 'Creato Display, sans-serif' }}
           >
             {project.title}
@@ -274,7 +275,7 @@ const ProjectCard = ({
 
         {/* Bottom section */}
         <div className="space-y-4">
-          <p className="text-black text-sm leading-relaxed font-medium">
+          <p className={`text-black text-sm leading-relaxed font-medium ${styles.projectDescription}`}>
             {project.description}
           </p>
 
@@ -283,7 +284,7 @@ const ProjectCard = ({
             {project.technologies.map((tech, i) => (
               <span 
                 key={i}
-                className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-xs border border-white/20 text-white"
+                className={`px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-xs border border-white/20 text-white ${styles.projectTech}`}
               >
                 {tech}
               </span>
@@ -291,7 +292,7 @@ const ProjectCard = ({
           </div>
 
           {/* Year badge */}
-          <div className="absolute top-6 right-6 w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+          <div className={`absolute top-6 right-6 w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center ${styles.projectYearBadge}`}>
             <span className="text-xs font-bold text-white">{project.year}</span>
           </div>
         </div>

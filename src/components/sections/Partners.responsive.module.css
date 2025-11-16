@@ -1,0 +1,91 @@
+/* Responsive styles for Partners section - ONLY affects responsive screens (max-width: 1024px) */
+/* Main desktop styles remain completely untouched */
+
+/* Keyframes for scroll animation - same as globals.css */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Make logo scrolling animation faster on responsive screens */
+@media (max-width: 1024px) {
+  /* Ensure continuous seamless scroll animation - override any conflicting styles */
+  .partnersScrollAnimation,
+  .partnersScrollAnimation.animate-scroll,
+  .partnersScrollAnimation[class*="animate-scroll"] {
+    animation: scroll 7s linear infinite !important;
+    animation-name: scroll !important;
+    animation-duration: 7s !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+    will-change: transform !important;
+  }
+
+  /* Ensure the container allows seamless scrolling */
+  .partnersScrollAnimation {
+    display: flex !important;
+    white-space: nowrap !important;
+    width: max-content !important;
+  }
+
+  /* Reduce spacing between logos on responsive so more are visible */
+  .partnersLogoItem {
+    margin-left: 2rem !important;
+    margin-right: 2rem !important;
+  }
+
+  .partnersLogoItem[class*="mx-16"] {
+    margin-left: 2rem !important;
+    margin-right: 2rem !important;
+  }
+
+  /* Make logos slightly smaller on responsive to fit more */
+  .partnersLogoItem > div {
+    width: 80px !important;
+    height: 48px !important;
+  }
+}
+
+/* For very small screens, make even faster */
+@media (max-width: 640px) {
+  /* Ensure continuous seamless scroll animation - override any conflicting styles */
+  .partnersScrollAnimation,
+  .partnersScrollAnimation.animate-scroll,
+  .partnersScrollAnimation[class*="animate-scroll"] {
+    animation: scroll 6.5s linear infinite !important;
+    animation-name: scroll !important;
+    animation-duration: 6.5s !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+    will-change: transform !important;
+  }
+
+  /* Ensure the container allows seamless scrolling */
+  .partnersScrollAnimation {
+    display: flex !important;
+    white-space: nowrap !important;
+    width: max-content !important;
+  }
+
+  /* Even less spacing on very small screens */
+  .partnersLogoItem {
+    margin-left: 1.5rem !important;
+    margin-right: 1.5rem !important;
+  }
+
+  .partnersLogoItem[class*="mx-16"] {
+    margin-left: 1.5rem !important;
+    margin-right: 1.5rem !important;
+  }
+
+  /* Make logos even smaller on very small screens */
+  .partnersLogoItem > div {
+    width: 70px !important;
+    height: 42px !important;
+  }
+}
+

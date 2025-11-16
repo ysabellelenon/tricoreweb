@@ -1,0 +1,74 @@
+/* Responsive styles for About section - ONLY affects responsive screens (max-width: 1024px) */
+/* Main desktop styles remain completely untouched */
+
+/* Make Mission and Vision boxes smaller on responsive screens */
+@media (max-width: 1024px) {
+  .missionVisionContainer {
+    gap: 1rem !important;
+  }
+
+  .missionBox,
+  .visionBox {
+    padding: 1.5rem !important;
+    border-radius: 1.5rem !important;
+  }
+
+  .missionIcon,
+  .visionIcon {
+    width: 3rem !important;
+    height: 3rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .missionIcon svg,
+  .visionIcon svg {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  .missionTitle,
+  .visionTitle {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .missionText,
+  .visionText {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+  }
+}
+
+/* For very small screens, make even smaller */
+@media (max-width: 640px) {
+  .missionBox,
+  .visionBox {
+    padding: 1.25rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  .missionIcon,
+  .visionIcon {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .missionIcon svg,
+  .visionIcon svg {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+
+  .missionTitle,
+  .visionTitle {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .missionText,
+  .visionText {
+    font-size: 0.8125rem !important;
+  }
+}
+

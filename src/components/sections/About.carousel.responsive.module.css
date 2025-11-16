@@ -1,0 +1,37 @@
+/* Responsive styles for Glimpse of Our Projects carousel - ONLY affects responsive screens (max-width: 1024px) */
+/* Main desktop styles remain completely untouched */
+
+/* Make carousel images smaller on responsive screens */
+@media (max-width: 1024px) {
+  .carouselImageCenter {
+    width: 280px !important;
+    height: 200px !important;
+    max-width: 280px !important;
+    max-height: 200px !important;
+  }
+
+  .carouselImageSide {
+    width: 180px !important;
+    height: 130px !important;
+    max-width: 180px !important;
+    max-height: 130px !important;
+  }
+}
+
+/* For very small screens, make even smaller */
+@media (max-width: 640px) {
+  .carouselImageCenter {
+    width: 240px !important;
+    height: 170px !important;
+    max-width: 240px !important;
+    max-height: 170px !important;
+  }
+
+  .carouselImageSide {
+    width: 150px !important;
+    height: 110px !important;
+    max-width: 150px !important;
+    max-height: 110px !important;
+  }
+}
+

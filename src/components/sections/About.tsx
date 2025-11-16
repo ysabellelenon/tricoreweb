@@ -5,6 +5,8 @@ import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'fra
 import Image from 'next/image';
 import Link from 'next/link';
 import AnimatedBorder from '@/components/ui/AnimatedBorder';
+import styles from './About.responsive.module.css';
+import carouselStyles from './About.carousel.responsive.module.css';
 
 // Portfolio projects data
 const projects = [
@@ -311,10 +313,24 @@ const About = () => {
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
   const carouselImages = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  // Auto-play carousel
+  // Auto-play carousel - DISABLED on responsive screens (max-width: 1024px)
   useEffect(() => {
+    // Check if screen is responsive
+    const checkIsResponsive = () => {
+      if (typeof window === 'undefined') return false;
+      return window.innerWidth <= 1024;
+    };
+
+    // Don't auto-play on responsive screens
+    if (checkIsResponsive()) {
+      return;
+    }
+
     const interval = setInterval(() => {
-      setCurrentCarouselIndex((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1));
+      // Check again before changing slide (in case window was resized)
+      if (!checkIsResponsive()) {
+        setCurrentCarouselIndex((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1));
+      }
     }, 4000); // Change slide every 4 seconds
 
     return () => clearInterval(interval);
@@ -369,10 +385,10 @@ const About = () => {
 
         {/* Mission & Vision Section */}
         <div className="mb-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 ${styles.missionVisionContainer}`}>
             {/* Mission */}
             <motion.div 
-              className="group relative overflow-hidden rounded-3xl p-8 md:p-10 border border-white/10 bg-gradient-to-br from-black/40 via-black/30 to-black/40 backdrop-blur-xl"
+              className={`group relative overflow-hidden rounded-3xl p-8 md:p-10 border border-white/10 bg-gradient-to-br from-black/40 via-black/30 to-black/40 backdrop-blur-xl ${styles.missionBox}`}
               initial={{ opacity: 0, x: -50 }}
               animate={titleInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               transition={{ duration: 0.6, delay: 0.5 }}
@@ -391,7 +407,7 @@ const About = () => {
               <div className="relative z-10">
                 {/* Icon with enhanced design */}
                 <motion.div 
-                  className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 backdrop-blur-sm border border-accent/20 flex items-center justify-center mb-6 shadow-lg shadow-accent/10"
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 backdrop-blur-sm border border-accent/20 flex items-center justify-center mb-6 shadow-lg shadow-accent/10 ${styles.missionIcon}`}
                   whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
                   transition={{ duration: 0.5 }}
                 >
@@ -401,7 +417,7 @@ const About = () => {
                 </motion.div>
                 
                 <motion.h3 
-                  className="text-3xl md:text-4xl font-bold mb-6 text-white"
+                  className={`text-3xl md:text-4xl font-bold mb-6 text-white ${styles.missionTitle}`}
                   style={{ fontFamily: 'Creato Display, sans-serif' }}
                   initial={{ opacity: 0 }}
                   animate={titleInView ? { opacity: 1 } : { opacity: 0 }}
@@ -411,7 +427,7 @@ const About = () => {
                 </motion.h3>
                 
                 <motion.p 
-                  className="text-white/80 leading-relaxed text-lg md:text-xl"
+                  className={`text-white/80 leading-relaxed text-lg md:text-xl ${styles.missionText}`}
                   initial={{ opacity: 0 }}
                   animate={titleInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.5, delay: 0.8 }}
@@ -423,7 +439,7 @@ const About = () => {
             
             {/* Vision */}
             <motion.div 
-              className="group relative overflow-hidden rounded-3xl p-8 md:p-10 border border-white/10 bg-gradient-to-br from-black/40 via-black/30 to-black/40 backdrop-blur-xl"
+              className={`group relative overflow-hidden rounded-3xl p-8 md:p-10 border border-white/10 bg-gradient-to-br from-black/40 via-black/30 to-black/40 backdrop-blur-xl ${styles.visionBox}`}
               initial={{ opacity: 0, x: 50 }}
               animate={titleInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -442,7 +458,7 @@ const About = () => {
               <div className="relative z-10">
                 {/* Icon with enhanced design */}
                 <motion.div 
-                  className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 backdrop-blur-sm border border-primary/20 flex items-center justify-center mb-6 shadow-lg shadow-primary/10"
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 backdrop-blur-sm border border-primary/20 flex items-center justify-center mb-6 shadow-lg shadow-primary/10 ${styles.visionIcon}`}
                   whileHover={{ rotate: [0, 10, -10, 10, 0], scale: 1.1 }}
                   transition={{ duration: 0.5 }}
                 >
@@ -453,7 +469,7 @@ const About = () => {
                 </motion.div>
                 
                 <motion.h3 
-                  className="text-3xl md:text-4xl font-bold mb-6 text-white"
+                  className={`text-3xl md:text-4xl font-bold mb-6 text-white ${styles.visionTitle}`}
                   style={{ fontFamily: 'Creato Display, sans-serif' }}
                   initial={{ opacity: 0 }}
                   animate={titleInView ? { opacity: 1 } : { opacity: 0 }}
@@ -463,7 +479,7 @@ const About = () => {
                 </motion.h3>
                 
                 <motion.p 
-                  className="text-white/80 leading-relaxed text-lg md:text-xl"
+                  className={`text-white/80 leading-relaxed text-lg md:text-xl ${styles.visionText}`}
                   initial={{ opacity: 0 }}
                   animate={titleInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.5, delay: 0.9 }}
@@ -591,8 +607,8 @@ const About = () => {
                       >
                         <div className={`glass-effect rounded-3xl p-2 md:p-3 border border-white/10 relative overflow-hidden group transition-all duration-700 ${
                           isCenter 
-                            ? 'w-[400px] md:w-[550px] lg:w-[650px] h-[280px] md:h-[380px] lg:h-[450px] shadow-2xl shadow-accent/30' 
-                            : 'w-[240px] md:w-[300px] lg:w-[360px] h-[170px] md:h-[220px] lg:h-[260px]'
+                            ? `w-[400px] md:w-[550px] lg:w-[650px] h-[280px] md:h-[380px] lg:h-[450px] shadow-2xl shadow-accent/30 ${carouselStyles.carouselImageCenter}` 
+                            : `w-[240px] md:w-[300px] lg:w-[360px] h-[170px] md:h-[220px] lg:h-[260px] ${carouselStyles.carouselImageSide}`
                         }`}>
                           <Image
                             src={`/images/${num}.png`}
