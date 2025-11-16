@@ -1,193 +1,179 @@
 "use client";
 
-import { useRef } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import Image from 'next/image';
+import { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import AnimatedBorder from '@/components/ui/AnimatedBorder';
 
-const features = [
+const headings = [
   {
-    title: 'Cutting-Edge Technology',
-    description: 'We leverage the latest technologies to deliver innovative solutions that keep you ahead of the competition.',
-    icon: '📱'
+    title: 'Precision vs Shortcuts',
+    tricore: 'Smart contracts enforce execution. If a deal dies, funds return instantly.',
+    typical: 'Deals vanish, buyers drop out, funds sit idle for weeks.'
   },
   {
-    title: 'Expert Team',
-    description: 'Our team of certified professionals brings years of experience across diverse technology domains.',
-    icon: '👥'
+    title: 'Consistency vs Neglect',
+    tricore: 'Automated processes ensure every project follows the same high standards and quality checks.',
+    typical: 'Inconsistent delivery, missed deadlines, and quality varies between projects.'
   },
   {
-    title: '24/7 Support',
-    description: 'Round-the-clock technical support ensures your systems are always up and running efficiently.',
-    icon: '🔧'
-  },
-  {
-    title: 'Tailored Solutions',
-    description: 'We create customized strategies and solutions designed specifically for your unique business needs.',
-    icon: '🎯'
-  },
-  {
-    title: 'Security First',
-    description: 'We prioritize the security of your data and systems with robust, multi-layered protection measures.',
-    icon: '🛡️'
-  },
-  {
-    title: 'Scalable Infrastructure',
-    description: 'Our solutions grow with your business, ensuring seamless scalability as your needs evolve.',
-    icon: '📈'
+    title: 'Security vs Risk',
+    tricore: 'Multi-layered security protocols protect your data and systems around the clock.',
+    typical: 'Vulnerable systems, data breaches, and reactive security measures.'
   }
 ];
 
-const FeatureCard = ({ feature, index }: { feature: typeof features[0], index: number }) => {
-  return (
-    <motion.div
-      className="relative rounded-lg p-6 transition-all duration-300 glass-effect hover:bg-surface-hover group"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true, amount: 0.2 }}
-      whileHover={{ y: -5 }}
-    >
-      <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary to-accent opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
-      
-      <div className="flex items-start">
-        <div className="mr-4 text-2xl">{feature.icon}</div>
-        <div>
-          <h3 className="text-lg font-bold mb-2 group-hover:text-accent transition-colors duration-300">
-            {feature.title}
-          </h3>
-          <p className="text-muted">{feature.description}</p>
-        </div>
-      </div>
-      
-      <motion.div 
-        className="absolute bottom-3 right-3 w-6 h-6 rounded-full bg-accent opacity-0 group-hover:opacity-30"
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        transition={{ duration: 0.3 }}
-      />
-    </motion.div>
-  );
-};
-
 const WhyChooseUs = () => {
-  const titleRef = useRef(null);
-  const isInView = useInView(titleRef, { once: true, amount: 0.2 });
-  const sectionRef = useRef(null);
-  const { scrollY } = useScroll();
-  // Parallax: move image up to 40px slower than scroll
-  const y = useTransform(scrollY, [0, 400], [0, 40]);
-  
+  const sectionRef = useRef<HTMLElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Calculate which heading should be active based on scroll progress
+  // Each heading gets 1/3 of the scroll progress
+  // Require heading to be more centered (around 60% into segment) before becoming active
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const segmentSize = 1 / headings.length;
+    // Require heading to be at least 60% through its segment before becoming active
+    // This ensures the heading is more centered before content changes
+    const adjustedProgress = latest - (segmentSize * 0.4);
+    let newIndex = Math.floor(adjustedProgress / segmentSize);
+    newIndex = Math.min(newIndex, headings.length - 1);
+    newIndex = Math.max(newIndex, 0);
+    
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  });
+
+  // Transform for left side headings scroll - move up as user scrolls
+  // Each heading is 400px apart, so we need to move by (headings.length - 1) * 400 pixels
+  // Start with first heading centered, end with last heading centered
+  // Add initial offset to move headings down so first one is visible
+  const totalScrollDistance = (headings.length - 1) * 400;
+  const initialOffset = 500; // Move down initially to show first heading
+  // Start with offset (first heading visible), end at offset - totalScrollDistance (last heading visible)
+  const leftScrollY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [initialOffset, initialOffset - totalScrollDistance]
+  );
+
+  // Calculate section height to allow proper scroll through all headings
+  // Need enough height for sticky to work - each heading needs ~150vh of scroll space
+  // Total: 3 headings * 150vh + 100vh for sticky element = 550vh minimum
+  // Using 600vh to ensure smooth scrolling
+  const sectionHeight = `600vh`;
+
   return (
-    <section className="py-20 relative overflow-hidden" id="solutions" ref={sectionRef}>
+    <section 
+      ref={sectionRef} 
+      className="relative" 
+      id="solutions"
+      style={{ height: sectionHeight }}
+    >
       <AnimatedBorder position="top" delay={0} />
       <AnimatedBorder position="bottom" delay={0.5} />
+      
       {/* Background elements */}
       <div className="absolute top-0 left-0 w-full h-full grid-pattern opacity-10 z-0" />
-      <div className="absolute top-40 right-40 w-80 h-80 rounded-full bg-primary opacity-5 blur-3xl" />
-      <div className="absolute bottom-40 left-40 w-80 h-80 rounded-full bg-secondary opacity-5 blur-3xl" />
+      <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary opacity-5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-secondary opacity-5 rounded-full blur-3xl" />
       
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16" ref={titleRef}>
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-4 flex justify-center items-center gap-4 flex-wrap" style={{ fontFamily: 'Creato Display, sans-serif' }}>
-            {['Why', 'Choose', 'Us'].map((word, index) => (
-              <motion.span
-                key={word}
-                initial={{ opacity: 0, color: index === 0 ? '#00B2E3' : index === 1 ? '#ffffff' : '#00B2E3' }}
-                animate={isInView ? { 
-                  opacity: [0, 1, 1],
-                  color: index === 0 
-                    ? ['#00B2E3', '#00B2E3', '#ffffff']  // "Why": blue to white
-                    : index === 1
-                    ? ['#ffffff', '#ffffff', '#00B2E3']  // "Choose": white to blue
-                    : ['#00B2E3', '#00B2E3', '#ffffff']  // "Us": blue to white
-                } : { opacity: 0, color: index === 0 ? '#00B2E3' : index === 1 ? '#ffffff' : '#00B2E3' }}
-                transition={{
-                  duration: 0.4,
-                  delay: index * 0.2,
-                  times: [0, 0.3, 1],
-                  ease: 'easeOut'
-                }}
-              >
-                {word}
-              </motion.span>
-            ))}
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left side with image */}
-          <div className="order-2 lg:order-1">
-            <motion.div className="relative" style={{ y }}>
-              <motion.div
-                className="relative z-10 rounded-2xl overflow-hidden border border-surface glass-effect"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-              >
-                <div className="aspect-[4/3] relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 z-10" />
-                  <div className="absolute inset-0 grid-pattern opacity-30" />
-                  
-                  {/* Actual image replacing the placeholder */}
-                  <Image
-                    src="/images/why_choose_us.png"
-                    alt="Why Choose Us Illustration"
-                    fill
-                    className="object-contain"
-                    priority
-                  />
-                </div>
-              </motion.div>
-              
-              {/* Decorative elements */}
-              <motion.div 
-                className="absolute -bottom-4 -left-4 w-24 h-24 rounded-xl border border-surface rotate-12 bg-background z-0"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-              />
-              <motion.div 
-                className="absolute -top-4 -right-4 w-20 h-20 rounded-xl border border-surface -rotate-12 bg-background z-0"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
-              />
-              
-              {/* Stats overlay */}
-              <motion.div
-                className="absolute -right-10 bottom-10 glass-effect rounded-lg p-4 shadow-lg z-20"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <div className="flex flex-col">
-                  <span className="text-accent font-bold text-2xl">98%</span>
-                  <span className="text-muted text-sm">Client Satisfaction</span>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-          
-          {/* Right side content */}
-          <div className="order-1 lg:order-2" ref={titleRef}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6 }}
-            >
-              <p className="text-muted mb-8">
-                At TriCore, we combine technical expertise with business acumen to deliver solutions that drive real results. Our client-focused approach ensures that we understand your unique challenges and opportunities.
-              </p>
-            </motion.div>
+      {/* Sticky container - this freezes the viewport */}
+      <div 
+        className="sticky top-0 h-screen w-full flex items-center justify-center py-20 z-10"
+      >
+        <div className="container mx-auto px-4 w-full h-full flex flex-col">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch flex-1 min-h-0">
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {features.map((feature, index) => (
-                <FeatureCard key={feature.title} feature={feature} index={index} />
-              ))}
+            {/* Left side - Headings */}
+            <div className="relative h-full overflow-hidden flex items-center min-h-0 max-w-md">
+              <motion.div
+                style={{ y: leftScrollY }}
+                className="flex flex-col items-start w-full"
+              >
+                {/* Spacer to position first heading at center */}
+                <div className="h-[calc(50vh-200px)] flex-shrink-0" />
+                {headings.map((heading, index) => {
+                  const isActive = activeIndex === index;
+                  const [beforeVs, afterVs] = heading.title.split(' vs ');
+                  const blueColor = '#00B2E3';
+                  
+                  return (
+                    <motion.h3
+                      key={index}
+                      className={`text-5xl md:text-6xl lg:text-7xl font-bold transition-all duration-500 ${
+                        index < headings.length - 1 ? 'mb-[400px]' : ''
+                      }`}
+                      style={{ fontFamily: 'Creato Display, sans-serif' }}
+                      animate={{
+                        opacity: isActive ? 1 : 0.95,
+                        scale: isActive ? 1 : 0.95,
+                      }}
+                    >
+                      <span style={{ color: isActive ? blueColor : 'rgba(0, 178, 227, 0.95)' }}>
+                        {beforeVs}
+                      </span>
+                      <span className={isActive ? 'text-white' : 'text-gray-600'}> vs </span>
+                      <span className={isActive ? 'text-white' : 'text-gray-600'}>
+                        {afterVs}
+                      </span>
+                    </motion.h3>
+                  );
+                })}
+              </motion.div>
+            </div>
+
+            {/* Right side - Content boxes */}
+            <div className="flex flex-col gap-6 h-full min-h-0 overflow-hidden">
+              {/* TriCore box */}
+              <div className="relative p-12 md:p-16 border border-white/20 bg-black/40 backdrop-blur-sm flex-1 flex flex-col justify-between min-h-0">
+                {/* Corner brackets */}
+                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/50" />
+                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white/50" />
+                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white/50" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/50" />
+                
+                <h4 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: 'Creato Display, sans-serif' }}>
+                  TriCore
+                </h4>
+                <motion.p 
+                  key={`tricore-text-${activeIndex}`}
+                  className="text-white text-xl md:text-2xl leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {headings[activeIndex].tricore}
+                </motion.p>
+              </div>
+
+              {/* Typical Services box */}
+              <div className="relative p-12 md:p-16 border border-white/20 bg-black/40 backdrop-blur-sm flex-1 flex flex-col justify-between min-h-0">
+                {/* Corner brackets */}
+                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/50" />
+                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white/50" />
+                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white/50" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/50" />
+                
+                <h4 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: 'Creato Display, sans-serif' }}>
+                  Typical Services
+                </h4>
+                <motion.p 
+                  key={`typical-text-${activeIndex}`}
+                  className="text-white/80 text-xl md:text-2xl leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
+                >
+                  {headings[activeIndex].typical}
+                </motion.p>
+              </div>
             </div>
           </div>
         </div>
@@ -196,4 +182,4 @@ const WhyChooseUs = () => {
   );
 };
 
-export default WhyChooseUs; 
+export default WhyChooseUs;
