@@ -6,6 +6,7 @@ import Link from 'next/link';
 import AnimatedBorder from '@/components/ui/AnimatedBorder';
 import ScrambleText from '@/components/ui/ScrambleText';
 import AutoScrambleText from '@/components/ui/AutoScrambleText';
+import { assetPath } from '@/lib/paths';
 
 const Hero = () => {
   const ref = useRef(null);
@@ -43,7 +44,7 @@ const Hero = () => {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/images/hero_video.mp4" type="video/mp4" />
+          <source src={assetPath('/images/hero_video.mp4')} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/65 to-black/55" />
       </motion.div>

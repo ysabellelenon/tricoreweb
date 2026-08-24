@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { assetPath } from '@/lib/paths';
 import AnimatedBorder from '@/components/ui/AnimatedBorder';
 import styles from './About.responsive.module.css';
 import carouselStyles from './About.carousel.responsive.module.css';
@@ -139,7 +140,7 @@ const ProjectCard = ({
             playsInline
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           >
-            <source src={project.video} type="video/mp4" />
+            <source src={assetPath(project.video)} type="video/mp4" />
           </video>
         ) : (
           <>
@@ -286,7 +287,7 @@ const VideoModal = ({ project, isOpen, onClose }: { project: typeof projects[0] 
           controls
           className="w-full h-full object-contain"
         >
-          <source src={project.video} type="video/mp4" />
+          <source src={assetPath(project.video)} type="video/mp4" />
         </video>
 
         {/* Project Info */}

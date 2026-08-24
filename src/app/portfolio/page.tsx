@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import Logo from '@/components/ui/Logo';
+import { assetPath } from '@/lib/paths';
 import styles from './portfolio.responsive.module.css';
 
 // Portfolio projects data (same as in About.tsx)
@@ -166,7 +167,7 @@ const VideoModal = ({ project, isOpen, onClose }: { project: typeof projects[0] 
           controls
           className="w-full h-full object-contain"
         >
-          <source src={project.video} type={project.video.endsWith('.mov') ? 'video/quicktime' : 'video/mp4'} />
+          <source src={assetPath(project.video)} type={project.video.endsWith('.mov') ? 'video/quicktime' : 'video/mp4'} />
         </video>
 
         {/* Project Info */}
@@ -239,7 +240,7 @@ const ProjectCard = ({
             preload="auto"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           >
-            <source src={project.video} type={project.video.endsWith('.mov') ? 'video/quicktime' : 'video/mp4'} />
+            <source src={assetPath(project.video)} type={project.video.endsWith('.mov') ? 'video/quicktime' : 'video/mp4'} />
           </video>
         ) : (
           <>
